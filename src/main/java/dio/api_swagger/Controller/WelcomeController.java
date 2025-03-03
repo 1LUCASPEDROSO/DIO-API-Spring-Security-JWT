@@ -10,7 +10,7 @@ public class WelcomeController {
     public String welcome(){
         return "welcome to my spring boot web api";
     }
-    @GetMapping("/users")
+    @GetMapping("/user")
     public String users(){
         return "Authorized user";
     }
