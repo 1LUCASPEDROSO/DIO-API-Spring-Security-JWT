@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,10 +38,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers("/managers").hasRole("MANAGERS")
-                        .requestMatchers("/users").hasAnyRole("USERS", "MANAGERS")
+                        .requestMatchers("/manager").hasRole("MANAGERS")
+                        .requestMatchers("/user").hasAnyRole("USERS", "MANAGERS")
                         .anyRequest().authenticated()
-                ).formLogin(withDefaults())
+                ).httpBasic(Customizer.withDefaults())
                 .build();
     }
    /* @Bean
