@@ -27,7 +27,7 @@ public class JWTFilter  extends OncePerRequestFilter {
         //esta implementação só esta validando a integridade do token
         try {
             if(token!=null && !token.isEmpty()) {
-                JWTObject tokenObject = JWTCreator.create(token,SecurityConfig.PREFIX, SecurityConfig.KEY);
+                JWTObject tokenObject = JWTCreator.decode(token,SecurityConfig.PREFIX, SecurityConfig.KEY);
 
                 List<SimpleGrantedAuthority> authorities = authorities(tokenObject.getRoles());
 
