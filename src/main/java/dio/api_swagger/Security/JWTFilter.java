@@ -8,17 +8,23 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class JWTFilter  extends OncePerRequestFilter {
+    @Autowired
+    SecurityConfig securityConfig;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -27,10 +33,9 @@ public class JWTFilter  extends OncePerRequestFilter {
         //esta implementação só esta validando a integridade do token
         try {
             if(token!=null && !token.isEmpty()) {
-                JWTObject tokenObject = JWTCreator.decode(token,SecurityConfig.PREFIX, SecurityConfig.KEY);
+                JWTObject tokenObject = JWTCreator.decode(token,securityConfig.getPREFIX(), securityConfig.getKEY());
 
                 List<SimpleGrantedAuthority> authorities = authorities(tokenObject.getRoles());
-
                 UsernamePasswordAuthenticationToken userToken =
                         new UsernamePasswordAuthenticationToken(
                                 tokenObject.getSubject(),
