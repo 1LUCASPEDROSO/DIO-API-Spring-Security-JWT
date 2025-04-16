@@ -31,8 +31,11 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Desabilita CSRF para API stateless
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/user").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/users").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/users/{username}").permitAll()
                         .requestMatchers(HttpMethod.GET,"/user").hasAnyRole("USERS", "MANAGERS")
                         .requestMatchers("/manager").hasRole("MANAGERS")
                         .anyRequest().authenticated()
